@@ -2,6 +2,7 @@
   "expo": {
     "name": "dogo-mart",
     "slug": "dogo-mart",
+    "scheme": "dogo-mart",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,10 +19,22 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.tinithk.dogomart"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9323d29b-b203-4991-8608-8bc7e6c2e587"
+      }
     }
   }
 }
