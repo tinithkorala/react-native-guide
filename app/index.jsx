@@ -26,7 +26,7 @@ export default function App() {
         <View style={styles.buttonContainer}>
           <Button
             label="Continue with Email"
-            onPress={() => router.push('/sign-in')} // Assuming 'router' is correctly imported and used
+            handlePress={() => router.push('/sign-in')}
           />
         </View>
       </ScrollView>
