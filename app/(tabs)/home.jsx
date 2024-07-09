@@ -55,14 +55,18 @@ const Home = () => {
   // Fetch products
   useEffect(() => {
     const initFn = async () => {
-      const { data, status } = await fetchProducts();
+      const { data, status } = await fetchProducts({
+        search: searchText,
+        category: selectedFilter,
+        sort: selectedSort
+      });
       if (status) {
         setProducts(data);
       }
       setLoading(false);
     };
     initFn();
-  }, []);
+  }, [searchText, selectedFilter, selectedSort]);
 
   const posts = [
     {
@@ -251,6 +255,8 @@ const Home = () => {
                   <Entypo name="star" size={24} color="black" />
                   <Text>{item.rating}</Text>
                 </View>
+                <Text>{item.price}</Text>
+
               </View>
               <TouchableOpacity>
                 <FontAwesome6 name="add" size={24} color="black" />

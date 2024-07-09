@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, doc, updateDoc, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, doc, updateDoc, query, where, orderBy } from "firebase/firestore";
 import { auth, db } from "./../firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -81,9 +81,33 @@ const signOutApi = async () => {
   }
 };
 
-const fetchProducts = async () => {
+const fetchProducts = async (queryParams) => {
+  console.log("Fil obj  🔍 ", queryParams);
   try {
-    const querySnapshot = await getDocs(collection(db, "products"));
+    let productsRef = collection(db, "products");
+
+    // Filter Category
+    if (queryParams.category) {
+      productsRef = query(productsRef, where("category", "==", queryParams.category));
+    }
+
+    // Search by Name
+    if (queryParams.search) {
+      // Convert searchText to lowercase for case-insensitive search
+      const searchTextLower = queryParams.search.toLowerCase();
+      productsRef = query(productsRef, where("slug", ">=", searchTextLower), where("name", "<=", searchTextLower + "\uf8ff"));
+    }
+
+    // Sort by selections
+    if (queryParams.sort === "asc") {
+      productsRef = query(productsRef, orderBy("price", "asc"));
+    } else if (queryParams.sort === "desc") {
+      productsRef = query(productsRef, orderBy("price", "desc"));
+    } else if (queryParams.sort === "brand") {
+      productsRef = query(productsRef, orderBy("brand", "asc"));
+    }
+
+    const querySnapshot = await getDocs(productsRef);
     const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     console.log(" ✅ Products fetching successfully");
     return {

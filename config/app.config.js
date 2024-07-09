@@ -21,7 +21,7 @@ const sort = [
   },
   {
     label: "Price Low To High",
-    value: "desc"
+    value: "asc"
   }
 ]
 
