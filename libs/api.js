@@ -1,6 +1,19 @@
-import { addDoc, collection, getDocs, doc, updateDoc, query, where, orderBy } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+  query,
+  where,
+  orderBy,
+} from "firebase/firestore";
 import { auth, db } from "./../firebaseConfig";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const signUpApi = async (username, email, password) => {
   try {
@@ -41,7 +54,11 @@ const signUpApi = async (username, email, password) => {
 
 const signInApi = async (email, password) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     const { user } = userCredential;
     console.log(" ✅ User signed in successfully:", user.uid);
     return {
@@ -88,14 +105,21 @@ const fetchProducts = async (queryParams) => {
 
     // Filter Category
     if (queryParams.category) {
-      productsRef = query(productsRef, where("category", "==", queryParams.category));
+      productsRef = query(
+        productsRef,
+        where("category", "==", queryParams.category)
+      );
     }
 
     // Search by Name
     if (queryParams.search) {
       // Convert searchText to lowercase for case-insensitive search
       const searchTextLower = queryParams.search.toLowerCase();
-      productsRef = query(productsRef, where("slug", ">=", searchTextLower), where("name", "<=", searchTextLower + "\uf8ff"));
+      productsRef = query(
+        productsRef,
+        where("slug", ">=", searchTextLower),
+        where("name", "<=", searchTextLower + "\uf8ff")
+      );
     }
 
     // Sort by selections
@@ -108,7 +132,10 @@ const fetchProducts = async (queryParams) => {
     }
 
     const querySnapshot = await getDocs(productsRef);
-    const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const data = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     console.log(" ✅ Products fetching successfully");
     return {
       status: true,
@@ -121,7 +148,45 @@ const fetchProducts = async (queryParams) => {
       message: error.message,
     };
   }
- 
-}
+};
 
-export { signUpApi, signInApi, signOutApi, fetchProducts };
+const fetchUserData = async (uId) => {
+  try {
+    const q = query(collection(db, "users"), where("uid", "==", uId));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const userData = querySnapshot.docs[0].data();
+      console.log(" ✅ User data fetched successfully:", userData);
+      return {
+        status: true,
+        data: userData,
+      };
+    } else {
+      console.log(" ❌ No such user!");
+      return {
+        status: false,
+        message: "No such user!",
+      };
+    }
+  } catch (error) {
+    console.error(" 🔥 Error fetching user data:", error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
+const getCurrentUserUid = () => {
+  return auth.currentUser ? auth.currentUser.uid : null;
+};
+
+export {
+  signUpApi,
+  signInApi,
+  signOutApi,
+  fetchProducts,
+  fetchUserData,
+  getCurrentUserUid,
+};
