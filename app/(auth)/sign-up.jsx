@@ -3,12 +3,16 @@ import React, { useState } from 'react';
 import Button from '../../components/Button';
 import { Link, router } from 'expo-router';
 import { signUpApi } from '../../libs/api';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../store/features/userSlice';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleSignUp = async () => {
     setIsLoading(true);
@@ -23,7 +27,10 @@ const SignUp = () => {
     try {
       const response = await signUpApi(username, email, password);
       if(response.status) {
-        router.replace('/home')
+        console.log("setting redux");
+        dispatch(setUser({ username, email }));
+        console.log("setting redux done");
+        // router.replace('/home')
       }else {
         throw new Error(response.message);
       }
