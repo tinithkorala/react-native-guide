@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 // Icons
 import { Feather } from "@expo/vector-icons";
 import { addItem, removeItem } from "../../store/features/cartSlice";
+import EmptyList from "../../components/EmptyList";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -66,7 +67,17 @@ const Cart = () => {
             </View>
           </View>
         )}
+        ListEmptyComponent={() => (
+          <EmptyList
+            title="No Items in cart"
+            subtitle="Add items from the shop..."
+          />
+        )}
       />
+      <View style={styles.totalContainer}>
+        <Text style={styles.totalText}>Total: </Text>
+        <Text style={styles.totalPrice}>LKR {totalPrice}</Text>
+      </View>
     </SafeAreaView>
   );
 };
@@ -119,5 +130,20 @@ const styles = StyleSheet.create({
   },
   itemTotalPrice: {
     alignItems: "flex-end",
+  },
+  totalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 15,
+    borderTopWidth: 1,
+    borderTopColor: "#ccc",
+  },
+  totalText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  totalPrice: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
