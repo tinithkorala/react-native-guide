@@ -1,19 +1,25 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../../components/Button';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+import { signUpApi } from '../../libs/api';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     // Handle the sign-up logic
     console.log('Username:', username);
     console.log('Email:', email);
     console.log('Password:', password);
+    const response = await signUpApi('tinith','tinithsse@gmail.com', 'hueduwhwf');
+    console.log("response", response);
+    router.replace('/home')
   };
+
+
 
   return (
     <View style={styles.container}>

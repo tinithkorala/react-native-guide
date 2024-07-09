@@ -1,16 +1,30 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { Tabs } from "expo-router";
+import React, { useEffect } from "react";
+import { Tabs, router } from "expo-router";
 
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+import { auth } from './../../firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const TabIcon = ({ icon, name, color, focused }) => {
   return <View style={styles.container}>{icon}</View>;
 };
 
 const TabsLayout = () => {
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        // User is signed in, redirect to home
+        router.replace('/sign-in'); 
+      }
+    });
+    return unsubscribe;
+  }, [])
+
   return (
     <>
       <Tabs>
