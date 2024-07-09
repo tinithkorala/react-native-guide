@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -7,6 +7,23 @@ import { collection, getDocs, doc, updateDoc, query, where } from 'firebase/fire
 import { db } from './../../firebaseConfig';
 
 const SignIn = () => {
+
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts1 = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "posts"));
+        const postsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setPosts(postsData);
+        console.log(postsData);
+      } catch (error) {
+        console.error('Error fetching posts: ', error);
+        return [];
+      }
+    };
+    fetchPosts1();
+  }, [])
 
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, 'tinithse@gmail.com', 'hello@helo')
@@ -64,6 +81,13 @@ const SignIn = () => {
         <TouchableOpacity onPress={fetchPosts}><Text>Get posts</Text></TouchableOpacity>
         <TouchableOpacity onPress={updatePost}><Text>Update posts</Text></TouchableOpacity>
         <TouchableOpacity onPress={queryPostData}><Text>Query posts data</Text></TouchableOpacity>
+
+        {posts.map((post) => (
+          <View key={post.id} style={styles.post}>
+            <Text style={styles.postTitle}>{post.title}</Text>
+            <Text>{post.text}</Text>
+          </View>
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -86,5 +110,15 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     resizeMode: "contain",
+  },
+  post: {
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 5,
+  },
+  postTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
