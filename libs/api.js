@@ -178,6 +178,35 @@ const fetchUserData = async (uId) => {
   }
 };
 
+const updateUserData = async (uid, updatedUserData) => {
+  try {
+    const q = query(collection(db, "users"), where("uid", "==", uid));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const userDocRef = querySnapshot.docs[0].ref;
+      await updateDoc(userDocRef, updatedUserData);
+      console.log(" ✅ User data updated successfully");
+      return {
+        status: true,
+        message: "User data updated successfully",
+      };
+    } else {
+      console.log(" ❌ No such user!");
+      return {
+        status: false,
+        message: "No such user!",
+      };
+    }
+  } catch (error) {
+    console.error(" 🔥 Error updating user data:", error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
 const getCurrentUserUid = () => {
   return auth.currentUser ? auth.currentUser.uid : null;
 };
@@ -188,5 +217,6 @@ export {
   signOutApi,
   fetchProducts,
   fetchUserData,
+  updateUserData,
   getCurrentUserUid,
 };
