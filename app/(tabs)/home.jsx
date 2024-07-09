@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -22,12 +23,16 @@ const Home = () => {
   };
 
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Fetch products
   useEffect(() => {
     const initFn = async () => {
-      const data = await fetchProducts();
-      console.log(data);
+      const { data, status } = await fetchProducts();
+      if (status) {
+        setProducts(data);
+      }
+    setLoading(false);
     };
     initFn();
   }, []);
@@ -145,10 +150,19 @@ const Home = () => {
     },
   ];
 
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Products Loading...</Text>
+        <ActivityIndicator size="large" color="blue" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.b1}>
       <FlatList
-        data={posts}
+        data={products}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
