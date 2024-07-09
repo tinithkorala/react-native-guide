@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../../components/Button';
 import { Link, router } from 'expo-router';
@@ -8,18 +8,31 @@ const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = async () => {
-    // Handle the sign-up logic
-    console.log('Username:', username);
-    console.log('Email:', email);
-    console.log('Password:', password);
-    const response = await signUpApi('tinith','tinithsse@gmail.com', 'hueduwhwf');
-    console.log("response", response);
-    router.replace('/home')
+    setIsLoading(true);
+    
+    // Input validation
+    if (!username || !email || !password) {
+      Alert.alert('Error', 'Please fill in all fields.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await signUpApi(username, email, password);
+      if(response.status) {
+        router.replace('/home')
+      }else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -45,7 +58,7 @@ const SignUp = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button label="Sign Up" handlePress={handleSignUp} isLoading={false} />
+      <Button label="Sign Up" handlePress={handleSignUp} isLoading={isLoading} />
       <Text style={styles.linkText}>
         Have account? Click here to login{' '}
         <Link href="sign-in" style={styles.link}>

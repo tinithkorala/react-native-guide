@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 
 const Button = ({ label, handlePress, isLoading }) => {
+  console.log("isLoading" , isLoading);
   return (
     <TouchableOpacity
       style={styles.button}
@@ -9,7 +10,7 @@ const Button = ({ label, handlePress, isLoading }) => {
       activeOpacity={0.7}
       disabled={isLoading}
     >
-      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.label}>{isLoading ? `${label}...` : label}</Text>
     </TouchableOpacity>
   );
 };
