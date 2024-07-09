@@ -12,9 +12,13 @@ import React, { useEffect, useState } from "react";
 import { fetchProducts, signOutApi } from "../../libs/api";
 import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
+import RNPickerSelect from "react-native-picker-select";
 
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+
+// Config values
+import { filter, sort } from "../../config/app.config";
 
 const Home = () => {
   const user = useSelector((state) => state.user);
@@ -25,6 +29,19 @@ const Home = () => {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const [selectedSort, setSelectedSort] = useState(null);
+
+  // Handle Filter Value
+  const handleFilterValueChange = (value) => {
+    setSelectedFilter(value);
+  };
+
+  // Handle Sort Value
+  const handleSortValueChange = (value) => {
+    setSelectedSort(value);
+  };
 
   // Fetch products
   useEffect(() => {
@@ -33,7 +50,7 @@ const Home = () => {
       if (status) {
         setProducts(data);
       }
-    setLoading(false);
+      setLoading(false);
     };
     initFn();
   }, []);
@@ -153,7 +170,7 @@ const Home = () => {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Products Loading...</Text>
         <ActivityIndicator size="large" color="blue" />
       </View>
@@ -192,10 +209,27 @@ const Home = () => {
           <View style={styles.listHeaderContainer}>
             <TextInput
               style={styles.input}
+              value={searchText}
+              onChangeText={setSearchText}
               placeholder="Search..."
             />
-            <View>
-              <Text>Filter by:</Text>
+            <View style={{ flexDirection: "row", gap: 5 }}>
+              <View style={styles.pickerContainer}>
+                <RNPickerSelect
+                  onValueChange={handleFilterValueChange}
+                  items={filter}
+                  value={selectedFilter}
+                  placeholder={{ label: "Filter by:", value: null }}
+                />
+              </View>
+              <View style={styles.pickerContainer}>
+                <RNPickerSelect
+                  onValueChange={handleSortValueChange}
+                  items={sort}
+                  value={selectedSort}
+                  placeholder={{ label: "Sort by:", value: null }}
+                />
+              </View>
             </View>
           </View>
         )}
@@ -236,7 +270,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 4,
     marginBottom: 12,
@@ -244,5 +278,11 @@ const styles = StyleSheet.create({
   },
   listHeaderContainer: {
     padding: 10,
-  }
+  },
+  pickerContainer: {
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 4,
+    width: "50%",
+  },
 });
