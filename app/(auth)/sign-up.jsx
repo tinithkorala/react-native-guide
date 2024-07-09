@@ -27,10 +27,8 @@ const SignUp = () => {
     try {
       const response = await signUpApi(username, email, password);
       if(response.status) {
-        console.log("setting redux");
         dispatch(setUser({ username, email }));
-        console.log("setting redux done");
-        // router.replace('/home')
+        router.replace('/home')
       }else {
         throw new Error(response.message);
       }

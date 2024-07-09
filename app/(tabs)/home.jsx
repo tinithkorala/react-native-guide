@@ -8,10 +8,6 @@ const Home = () => {
 
   const user = useSelector((state) => state.user);
 
-  console.log("home con");
-
-  console.log("user", user);
-
   const handleSignOut = () => {
     signOutApi();
   }
