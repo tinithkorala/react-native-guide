@@ -3,27 +3,19 @@ import React, { useState } from 'react';
 import Button from '../../components/Button';
 import { Link } from 'expo-router';
 
-const SignUp = () => {
-  const [username, setUsername] = useState('');
+const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignUp = () => {
-    // Handle the sign-up logic
-    console.log('Username:', username);
+  const handleSignIn = () => {
+    // Handle the sign-in logic
     console.log('Email:', email);
     console.log('Password:', password);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Sign Up</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-      />
+      <Text style={styles.title}>Sign In</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -39,18 +31,18 @@ const SignUp = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button label="Sign Up" handlePress={handleSignUp} isLoading={false} />
+      <Button label="Sign In" handlePress={handleSignIn} isLoading={false} />
       <Text style={styles.linkText}>
-        Have account? Click here to login{' '}
-        <Link href="sign-in" style={styles.link}>
-          Sign In
+        No account? Click here to create{' '}
+        <Link href="sign-up" style={styles.link}>
+          Sign Up
         </Link>
       </Text>
     </View>
   );
 };
 
-export default SignUp;
+export default SignIn;
 
 const styles = StyleSheet.create({
   container: {
