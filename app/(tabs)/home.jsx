@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { fetchProducts, signOutApi } from "../../libs/api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RNPickerSelect from "react-native-picker-select";
 
@@ -22,8 +22,16 @@ import { FontAwesome5 } from "@expo/vector-icons";
 // Config values
 import { filter, sort } from "../../config/app.config";
 
+// Redux Slice
+import { addItem } from "../../store/features/cartSlice";
+
 const Home = () => {
   const user = useSelector((state) => state.user);
+  const cart = useSelector((state) => state.cart);
+
+  const dispatch = useDispatch();
+
+  console.log("cart ", cart);
 
   const handleSignOut = () => {
     signOutApi();
@@ -58,7 +66,7 @@ const Home = () => {
       const { data, status } = await fetchProducts({
         search: searchText,
         category: selectedFilter,
-        sort: selectedSort
+        sort: selectedSort,
       });
       if (status) {
         setProducts(data);
@@ -68,119 +76,12 @@ const Home = () => {
     initFn();
   }, [searchText, selectedFilter, selectedSort]);
 
-  const posts = [
-    {
-      id: 1,
-      name: "Fresh Salmon Fillet",
-      category: "food",
-      rating: 4.8,
-      price: 25.99,
-      currency: "USD",
-      unit: "lb",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/dog-app-40f5d.appspot.com/o/pedigree.jpeg?alt=media&token=e6b1ce8a-a87a-48b4-b308-438095456e1c", // Placeholder for now
-    },
-    {
-      id: 2,
-      name: "Organic Mixed Greens",
-      category: "food",
-      rating: 4.9,
-      price: 3.99,
-      currency: "USD",
-      unit: "bunch",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/dog-app-40f5d.appspot.com/o/default-image.png?alt=media&token=af4d3ec8-eb12-4caf-bb7d-26233050196d", // Placeholder for now
-    },
-    {
-      id: 3,
-      name: "Whole Wheat Bread",
-      category: "food",
-      rating: 4.7,
-      price: 2.49,
-      currency: "USD",
-      unit: "loaf",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/dog-app-40f5d.appspot.com/o/default-image.png?alt=media&token=af4d3ec8-eb12-4caf-bb7d-26233050196d", // Placeholder for now
-    },
-    {
-      id: 4,
-      name: "Greek Yogurt with Berries",
-      category: "nutrition",
-      rating: 4.5,
-      price: 4.29,
-      currency: "USD",
-      unit: "cup",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/dog-app-40f5d.appspot.com/o/default-image.png?alt=media&token=af4d3ec8-eb12-4caf-bb7d-26233050196d", // Placeholder for now
-    },
-    {
-      id: 5,
-      name: "Multivitamin Supplement",
-      category: "nutrition",
-      rating: 4.3,
-      price: 12.99,
-      currency: "USD",
-      unit: "bottle",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/dog-app-40f5d.appspot.com/o/default-image.png?alt=media&token=af4d3ec8-eb12-4caf-bb7d-26233050196d", // Placeholder for now
-    },
-    {
-      id: 6,
-      name: "Chicken Breast (Boneless, Skinless)",
-      category: "food",
-      rating: 4.6,
-      price: 5.99,
-      currency: "USD",
-      unit: "lb",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/dog-app-40f5d.appspot.com/o/default-image.png?alt=media&token=af4d3ec8-eb12-4caf-bb7d-26233050196d", // Placeholder for now
-    },
-    {
-      id: 7,
-      name: "Brown Rice",
-      category: "food",
-      rating: 4.4,
-      price: 2.29,
-      currency: "USD",
-      unit: "bag",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/dog-app-40f5d.appspot.com/o/default-image.png?alt=media&token=af4d3ec8-eb12-4caf-bb7d-26233050196d", // Placeholder for now
-    },
-    {
-      id: 8,
-      name: "Protein Powder",
-      category: "nutrition",
-      rating: 4.2,
-      price: 29.99,
-      currency: "USD",
-      unit: "container",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/dog-app-40f5d.appspot.com/o/default-image.png?alt=media&token=af4d3ec8-eb12-4caf-bb7d-26233050196d", // Placeholder for now
-    },
-    {
-      id: 9,
-      name: "Almonds",
-      category: "nutrition",
-      rating: 4.8,
-      price: 7.99,
-      currency: "USD",
-      unit: "cup",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/dog-app-40f5d.appspot.com/o/default-image.png?alt=media&token=af4d3ec8-eb12-4caf-bb7d-26233050196d", // Placeholder for now
-    },
-    {
-      id: 10,
-      name: "Oatmeal",
-      category: "food",
-      rating: 4.7,
-      currency: "USD",
-      price: 2.99,
-      unit: "container",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/dog-app-40f5d.appspot.com/o/default-image.png?alt=media&token=af4d3ec8-eb12-4caf-bb7d-26233050196d", // Placeholder for now
-    },
-  ];
+  // Handle Add Item To Cart
+  const handleAddItemToCart = (item) => {
+    dispatch(addItem(item))
+  };
 
+  // Loading Content
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -251,14 +152,14 @@ const Home = () => {
             <View style={styles.descriptionContainer}>
               <View>
                 <Text style={styles.itemName}>{item.name}</Text>
+                <Text style={styles.itemName}>{item.id}</Text>
                 <View style={styles.ratingContainer}>
                   <Entypo name="star" size={24} color="black" />
                   <Text>{item.rating}</Text>
                 </View>
                 <Text>{item.price}</Text>
-
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => handleAddItemToCart(item)}>
                 <FontAwesome6 name="add" size={24} color="black" />
               </TouchableOpacity>
             </View>
