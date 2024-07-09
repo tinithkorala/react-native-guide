@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs, doc, updateDoc, query, where } from "firebase/firestore";
 import { auth, db } from "./../firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -81,4 +81,23 @@ const signOutApi = async () => {
   }
 };
 
-export { signUpApi, signInApi, signOutApi };
+const fetchProducts = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "products"));
+    const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    console.log(" ✅ Products fetching successfully");
+    return {
+      status: true,
+      data: data,
+    };
+  } catch (error) {
+    console.error(" 🔥 Error fetching products:", error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+ 
+}
+
+export { signUpApi, signInApi, signOutApi, fetchProducts };

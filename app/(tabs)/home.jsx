@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
-import { signOutApi } from "../../libs/api";
+import React, { useEffect, useState } from "react";
+import { fetchProducts, signOutApi } from "../../libs/api";
 import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -20,6 +20,17 @@ const Home = () => {
   const handleSignOut = () => {
     signOutApi();
   };
+
+  const [products, setProducts] = useState([]);
+
+  // Fetch products
+  useEffect(() => {
+    const initFn = async () => {
+      const data = await fetchProducts();
+      console.log(data);
+    };
+    initFn();
+  }, []);
 
   const posts = [
     {
@@ -184,10 +195,10 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   ratingContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   itemImage: {
     width: "100%",
