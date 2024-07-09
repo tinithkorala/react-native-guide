@@ -55,7 +55,7 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="educational"
           options={{
-            title: "Home",
+            title: "Educational",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <View style={styles.container}>
@@ -67,7 +67,7 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="profile"
           options={{
-            title: "Home",
+            title: "Profile",
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <View style={styles.container}>
