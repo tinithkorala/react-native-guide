@@ -18,7 +18,7 @@ const TabsLayout = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        // User is signed in, redirect to home
+        // Handle user not sign-in
         router.replace('/sign-in'); 
       }
     });

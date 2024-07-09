@@ -9,42 +9,40 @@ import Button from "../components/Button";
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.logoContainer}>
-          <Image source={logo} style={styles.logo} />
-        </View>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>Dog Food App</Text>
-        </View>
-        <View style={styles.imageContainer}>
-          <Image source={welcome} style={styles.image} />
-        </View>
-        <View style={styles.subTitleContainer}>
-          <Text style={styles.subTitleText}>Trusted by many happy dogs 🐕</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            label="Continue with Email"
-            handlePress={() => router.push('/sign-in')}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.logoContainer}>
+        <Image source={logo} style={styles.logo} />
+      </View>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>Dog Food App</Text>
+      </View>
+      <View style={styles.imageContainer}>
+        <Image source={welcome} style={styles.image} />
+      </View>
+      <View style={styles.subTitleContainer}>
+        <Text style={styles.subTitleText}>Trusted by many happy dogs 🐕</Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          label="Continue with Email"
+          handlePress={() => router.push("/sign-in")}
+        />
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   scrollViewContent: {
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   logoContainer: {
     marginTop: 40,
@@ -53,14 +51,14 @@ const styles = StyleSheet.create({
   logo: {
     width: 200,
     height: 200,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   titleContainer: {
     marginBottom: 20,
   },
   titleText: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   imageContainer: {
     marginTop: 20,
@@ -69,15 +67,15 @@ const styles = StyleSheet.create({
   image: {
     width: 300,
     height: 300,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   subTitleContainer: {
     marginBottom: 20,
   },
   subTitleText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
   buttonContainer: {
     marginTop: 20,
