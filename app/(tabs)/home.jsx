@@ -14,8 +14,10 @@ import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RNPickerSelect from "react-native-picker-select";
 
+// Icons
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 // Config values
 import { filter, sort } from "../../config/app.config";
@@ -41,6 +43,13 @@ const Home = () => {
   // Handle Sort Value
   const handleSortValueChange = (value) => {
     setSelectedSort(value);
+  };
+
+  // Handle Clear Search Filter Sort
+  const handleReset = () => {
+    setSearchText("");
+    setSelectedFilter(null);
+    setSelectedSort(null);
   };
 
   // Fetch products
@@ -177,8 +186,52 @@ const Home = () => {
     );
   }
 
+  console.log({
+    searchText,
+    selectedFilter,
+    selectedSort,
+  });
+
   return (
     <SafeAreaView style={styles.b1}>
+      <View style={styles.listHeaderContainer}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 5,
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+          }}
+        >
+          <TextInput
+            style={styles.input}
+            value={searchText}
+            onChangeText={setSearchText}
+            placeholder="Search..."
+          />
+          <TouchableOpacity onPress={handleReset}>
+            <FontAwesome5 name="eraser" size={30} color="black" />
+          </TouchableOpacity>
+        </View>
+        <View style={{ flexDirection: "row", gap: 5 }}>
+          <View style={styles.pickerContainer}>
+            <RNPickerSelect
+              onValueChange={handleFilterValueChange}
+              items={filter}
+              value={selectedFilter}
+              placeholder={{ label: "Filter by:", value: null }}
+            />
+          </View>
+          <View style={styles.pickerContainer}>
+            <RNPickerSelect
+              onValueChange={handleSortValueChange}
+              items={sort}
+              value={selectedSort}
+              placeholder={{ label: "Sort by:", value: null }}
+            />
+          </View>
+        </View>
+      </View>
       <FlatList
         data={products}
         keyExtractor={(item) => item.id.toString()}
@@ -205,34 +258,7 @@ const Home = () => {
             </View>
           </View>
         )}
-        ListHeaderComponent={() => (
-          <View style={styles.listHeaderContainer}>
-            <TextInput
-              style={styles.input}
-              value={searchText}
-              onChangeText={setSearchText}
-              placeholder="Search..."
-            />
-            <View style={{ flexDirection: "row", gap: 5 }}>
-              <View style={styles.pickerContainer}>
-                <RNPickerSelect
-                  onValueChange={handleFilterValueChange}
-                  items={filter}
-                  value={selectedFilter}
-                  placeholder={{ label: "Filter by:", value: null }}
-                />
-              </View>
-              <View style={styles.pickerContainer}>
-                <RNPickerSelect
-                  onValueChange={handleSortValueChange}
-                  items={sort}
-                  value={selectedSort}
-                  placeholder={{ label: "Sort by:", value: null }}
-                />
-              </View>
-            </View>
-          </View>
-        )}
+        ListHeaderComponent={() => <Text>Here</Text>}
       />
     </SafeAreaView>
   );
@@ -275,6 +301,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginBottom: 12,
     paddingHorizontal: 8,
+    width: "90%",
   },
   listHeaderContainer: {
     padding: 10,
