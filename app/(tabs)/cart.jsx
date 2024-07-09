@@ -1,15 +1,35 @@
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // Icons
 import { Feather } from "@expo/vector-icons";
+import { addItem, removeItem } from "../../store/features/cartSlice";
 
 const Cart = () => {
+  const dispatch = useDispatch();
+
   const cart = useSelector((state) => state.cart);
 
   const { items, totalItems, totalPrice } = cart;
+
+  // Handle Plus Icon
+  const handleAddItem = (item) => {
+    dispatch(addItem(item));
+  };
+
+  // Handle Minus Icon
+  const handleRemoveItem = (item) => {
+    dispatch(removeItem(item.id));
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,14 +47,22 @@ const Cart = () => {
             <View style={styles.itemDescription}>
               <Text style={styles.itemName}>{item.name}</Text>
               <View style={styles.cartControl}>
-                <Feather name="plus-square" size={24} color="black" />
+                <TouchableOpacity onPress={() => handleAddItem(item)}>
+                  <Feather name="plus-square" size={24} color="black" />
+                </TouchableOpacity>
                 <Text style={styles.itemQuantity}>{item.quantity}</Text>
-                <Feather name="minus-square" size={24} color="black" />
+                <TouchableOpacity onPress={() => handleRemoveItem(item)}>
+                  <Feather name="minus-square" size={24} color="black" />
+                </TouchableOpacity>
               </View>
-              <Text style={styles.itemPrice}>{item.currency} {item.price}</Text>
+              <Text style={styles.itemPrice}>
+                {item.currency} {item.price}
+              </Text>
             </View>
             <View style={styles.itemTotalPrice}>
-              <Text style={styles.itemPrice}>{item.currency} {item.price * item.quantity}</Text>
+              <Text style={styles.itemPrice}>
+                {item.currency} {item.price * item.quantity}
+              </Text>
             </View>
           </View>
         )}
