@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchPosts } from "../../libs/api";
+import VideoPlayer from "../../components/VideoPlayer";
 
 const Educational = () => {
   const [posts, setPosts] = useState([]);
@@ -50,6 +51,9 @@ const Educational = () => {
                 style={styles.itemImage}
                 resizeMode="cover"
               />
+            )}
+            {item.type === 'video' && (
+              <VideoPlayer url={item.url} />
             )}
             <Text style={styles.description} >{item.description.substring(0, 100)}...</Text>
           </View>
