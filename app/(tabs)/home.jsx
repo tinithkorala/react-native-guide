@@ -62,20 +62,20 @@ const Home = () => {
   };
 
   // Fetch products
-  // useEffect(() => {
-  //   const initFn = async () => {
-  //     const { data, status } = await fetchProducts({
-  //       search: searchText,
-  //       category: selectedFilter,
-  //       sort: selectedSort,
-  //     });
-  //     if (status) {
-  //       setProducts(data);
-  //     }
-  //     setLoading(false);
-  //   };
-  //   initFn();
-  // }, [searchText, selectedFilter, selectedSort]);
+  useEffect(() => {
+    const initFn = async () => {
+      const { data, status } = await fetchProducts({
+        search: searchText,
+        category: selectedFilter,
+        sort: selectedSort,
+      });
+      if (status) {
+        setProducts(data);
+      }
+      // setLoading(false);
+    };
+    initFn();
+  }, []);
 
   // Handle Add Item To Cart
   const handleAddItemToCart = (item) => {
@@ -92,11 +92,11 @@ const Home = () => {
   //   );
   // }
 
-  console.log({
-    searchText,
-    selectedFilter,
-    selectedSort,
-  });
+  // console.log({
+  //   searchText,
+  //   selectedFilter,
+  //   selectedSort,
+  // });
 
   return (
     <SafeAreaView style={styles.container}>
