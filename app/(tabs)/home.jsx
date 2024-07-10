@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { fetchProducts, signOutApi } from "../../libs/api";
 import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
-import RNPickerSelect from "react-native-picker-select";
+// import RNPickerSelect from "react-native-picker-select";
 
 // Icons
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -62,20 +62,20 @@ const Home = () => {
   };
 
   // Fetch products
-  useEffect(() => {
-    const initFn = async () => {
-      const { data, status } = await fetchProducts({
-        search: searchText,
-        category: selectedFilter,
-        sort: selectedSort,
-      });
-      if (status) {
-        setProducts(data);
-      }
-      setLoading(false);
-    };
-    initFn();
-  }, [searchText, selectedFilter, selectedSort]);
+  // useEffect(() => {
+  //   const initFn = async () => {
+  //     const { data, status } = await fetchProducts({
+  //       search: searchText,
+  //       category: selectedFilter,
+  //       sort: selectedSort,
+  //     });
+  //     if (status) {
+  //       setProducts(data);
+  //     }
+  //     setLoading(false);
+  //   };
+  //   initFn();
+  // }, [searchText, selectedFilter, selectedSort]);
 
   // Handle Add Item To Cart
   const handleAddItemToCart = (item) => {
@@ -83,14 +83,14 @@ const Home = () => {
   };
 
   // Loading Content
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Products Loading...</Text>
-        <ActivityIndicator size="large" color="blue" />
-      </View>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+  //       <Text>Products Loading...</Text>
+  //       <ActivityIndicator size="large" color="blue" />
+  //     </View>
+  //   );
+  // }
 
   console.log({
     searchText,
@@ -100,6 +100,7 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text>Hello world</Text>
       <View style={styles.listHeaderContainer}>
         <View
           style={{
@@ -121,20 +122,20 @@ const Home = () => {
         </View>
         <View style={{ flexDirection: "row", gap: 5 }}>
           <View style={styles.pickerContainer}>
-            <RNPickerSelect
+            {/* <RNPickerSelect
               onValueChange={handleFilterValueChange}
               items={filter}
               value={selectedFilter}
               placeholder={{ label: "Filter by:", value: null }}
-            />
+            /> */}
           </View>
           <View style={styles.pickerContainer}>
-            <RNPickerSelect
+            {/* <RNPickerSelect
               onValueChange={handleSortValueChange}
               items={sort}
               value={selectedSort}
               placeholder={{ label: "Sort by:", value: null }}
-            />
+            /> */}
           </View>
         </View>
       </View>
