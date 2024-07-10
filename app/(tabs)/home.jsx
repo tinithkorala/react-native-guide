@@ -24,6 +24,7 @@ import { filter, sort } from "../../config/app.config";
 
 // Redux Slice
 import { addItem } from "../../store/features/cartSlice";
+import { Link, router } from "expo-router";
 
 const Home = () => {
   const user = useSelector((state) => state.user);
@@ -78,7 +79,7 @@ const Home = () => {
 
   // Handle Add Item To Cart
   const handleAddItemToCart = (item) => {
-    dispatch(addItem(item))
+    dispatch(addItem(item));
   };
 
   // Loading Content
@@ -151,7 +152,9 @@ const Home = () => {
             </View>
             <View style={styles.descriptionContainer}>
               <View>
-                <Text style={styles.itemName}>{item.name}</Text>
+                <Link href={`/pages/${item.id}`}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                </Link>
                 <Text style={styles.itemName}>{item.id}</Text>
                 <View style={styles.ratingContainer}>
                   <Entypo name="star" size={24} color="black" />
