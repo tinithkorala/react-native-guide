@@ -99,7 +99,7 @@ const Home = () => {
   });
 
   return (
-    <SafeAreaView style={styles.b1}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.listHeaderContainer}>
         <View
           style={{
@@ -147,28 +147,39 @@ const Home = () => {
               <Image
                 source={{ uri: item.image }}
                 style={styles.itemImage}
-                resizeMode="contain"
+                resizeMode="cover"
               />
             </View>
-            <View style={styles.descriptionContainer}>
-              <View>
-                <Link href={`/pages/${item.id}`}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                </Link>
-                <Text style={styles.itemName}>{item.id}</Text>
-                <View style={styles.ratingContainer}>
-                  <Entypo name="star" size={24} color="black" />
-                  <Text>{item.rating}</Text>
-                </View>
-                <Text>{item.price}</Text>
+            <View style={styles.descriptionView}>
+              <Link href={`/pages/${item.id}`}>
+                <Text style={styles.itemName}>{item.name}</Text>
+              </Link>
+            </View>
+            <View style={styles.descriptionView}>
+              <View style={styles.ratingContainer}>
+                <Entypo
+                  name="star"
+                  size={36}
+                  style={{ fontWeight: "bold" }}
+                  color="black"
+                />
+                <Text style={{ fontSize: 36 }}>{item.rating.toFixed(1)}</Text>
               </View>
+              <Text style={{ fontSize: 36, color: "gray" }}>LKR {item.price}</Text>
               <TouchableOpacity onPress={() => handleAddItemToCart(item)}>
-                <FontAwesome6 name="add" size={24} color="black" />
+                <FontAwesome6
+                  name="cart-plus"
+                  size={36}
+                  style={{ fontWeight: "bold" }}
+                  color="green"
+                />
               </TouchableOpacity>
             </View>
           </View>
         )}
-        ListHeaderComponent={() => <Text>Here</Text>}
+        ListHeaderComponent={() => (
+          <Text style={styles.listHeader}>Items Count : {products.length}</Text>
+        )}
       />
     </SafeAreaView>
   );
@@ -177,33 +188,42 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
-  b1: {
+  container: {
     flex: 1,
-    borderWidth: 2,
-    borderColor: "red",
+    padding: 10,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+  },
+  listHeader: {
+    marginTop: 10,
+    marginBottom: 10,
+    fontSize: 16,
+    fontWeight: "bold",
   },
   itemContainer: {
-    padding: 10,
-    borderBottomWidth: 1,
+    marginBottom: 50,
+    borderBottomWidth: 0.5,
     borderBottomColor: "#ccc",
-    // alignItems: 'center',
-  },
-  descriptionContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  ratingContainer: {
-    flexDirection: "row",
   },
   itemImage: {
     width: "100%",
     height: 500,
   },
   itemName: {
-    fontSize: 16,
-    marginTop: 5,
+    fontSize: 36,
+    fontWeight: "bold",
   },
+
+  descriptionView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  ratingContainer: {
+    flexDirection: "row",
+  },
+
   input: {
     height: 40,
     borderColor: "#ccc",
@@ -213,9 +233,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     width: "90%",
   },
-  listHeaderContainer: {
-    padding: 10,
-  },
+  listHeaderContainer: {},
   pickerContainer: {
     borderColor: "#ccc",
     borderWidth: 1,
