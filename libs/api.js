@@ -237,6 +237,28 @@ const fetchProductById = async (productId) => {
   }
 };
 
+const fetchPosts = async () => {
+  try {
+    const postsRef = collection(db, "posts");
+    const querySnapshot = await getDocs(postsRef);
+    const data = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    console.log(" ✅ Posts fetched successfully");
+    return {
+      status: true,
+      data: data,
+    };
+  } catch (error) {
+    console.error(" 🔥 Error fetching posts:", error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
 
 const getCurrentUserUid = () => {
   return auth.currentUser ? auth.currentUser.uid : null;
@@ -250,5 +272,6 @@ export {
   fetchUserData,
   updateUserData,
   fetchProductById,
+  fetchPosts,
   getCurrentUserUid,
 };
