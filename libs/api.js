@@ -207,6 +207,37 @@ const updateUserData = async (uid, updatedUserData) => {
   }
 };
 
+const fetchProductById = async (productId) => {
+  try {
+    const docRef = doc(db, "products", productId);
+    const docSnapshot = await getDoc(docRef);
+
+    if (docSnapshot.exists()) {
+      const productData = docSnapshot.data();
+      console.log(" ✅ Fetch product successfully");
+      return {
+        status: true,
+        data: {
+          id: docSnapshot.id,
+          ...productData,
+        },
+      };
+    } else {
+      return {
+        status: false,
+        message: "Product not found",
+      };
+    }
+  } catch (error) {
+    console.error("🔥 Error fetching product:", error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
+
 const getCurrentUserUid = () => {
   return auth.currentUser ? auth.currentUser.uid : null;
 };
@@ -218,5 +249,6 @@ export {
   fetchProducts,
   fetchUserData,
   updateUserData,
+  fetchProductById,
   getCurrentUserUid,
 };
