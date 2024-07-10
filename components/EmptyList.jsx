@@ -3,9 +3,9 @@ import React from 'react'
 
 const EmptyList = ({title, subtitle}) => {
   return (
-    <View>
-      <Text>{title}</Text>
-      <Text>{subtitle}</Text>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginTop: 200 }}>
+      <Text style={{ fontSize: 36 }}>{title}</Text>
+      <Text style={{ fontSize: 24, color: "gray" }}>{subtitle}</Text>
     </View>
   )
 }
