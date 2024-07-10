@@ -72,10 +72,10 @@ const Home = () => {
       if (status) {
         setProducts(data);
       }
-      // setLoading(false);
+      setLoading(false);
     };
     initFn();
-  }, []);
+  }, [searchText]);
 
   // Handle Add Item To Cart
   const handleAddItemToCart = (item) => {
@@ -83,14 +83,14 @@ const Home = () => {
   };
 
   // Loading Content
-  // if (loading) {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //       <Text>Products Loading...</Text>
-  //       <ActivityIndicator size="large" color="blue" />
-  //     </View>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Products Loading...</Text>
+        <ActivityIndicator size="large" color="blue" />
+      </View>
+    );
+  }
 
   // console.log({
   //   searchText,
@@ -100,7 +100,6 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Hello world</Text>
       <View style={styles.listHeaderContainer}>
         <View
           style={{
