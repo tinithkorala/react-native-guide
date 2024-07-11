@@ -9,15 +9,15 @@ import { Provider } from "react-redux";
 import { store } from "./../store/store";
 
 const RootLayout = () => {
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       // User is signed in, redirect to home
-  //       router.replace("/home");
-  //     }
-  //   });
-  //   return unsubscribe;
-  // }, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, redirect to home
+        router.replace("/home");
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <Provider store={store}>
