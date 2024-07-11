@@ -13,6 +13,7 @@ import { fetchProducts, signOutApi } from "../../libs/api";
 import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 // import RNPickerSelect from "react-native-picker-select";
+import { Dropdown } from "react-native-element-dropdown";
 
 // Icons
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -75,7 +76,7 @@ const Home = () => {
       setLoading(false);
     };
     initFn();
-  }, [searchText]);
+  }, [searchText, selectedFilter, selectedSort]);
 
   // Handle Add Item To Cart
   const handleAddItemToCart = (item) => {
@@ -121,20 +122,30 @@ const Home = () => {
         </View>
         <View style={{ flexDirection: "row", gap: 5 }}>
           <View style={styles.pickerContainer}>
-            {/* <RNPickerSelect
-              onValueChange={handleFilterValueChange}
-              items={filter}
+            <Dropdown
+              data={filter}
+              labelField="label"
+              valueField="value"
+              placeholder="Filter By"
               value={selectedFilter}
-              placeholder={{ label: "Filter by:", value: null }}
-            /> */}
+              onChange={(item) => setSelectedFilter(item.value)}
+              style={styles.dropdown}
+              containerStyle={styles.dropdownContainer}
+              itemTextStyle={styles.dropdownText}
+            />
           </View>
           <View style={styles.pickerContainer}>
-            {/* <RNPickerSelect
-              onValueChange={handleSortValueChange}
-              items={sort}
+            <Dropdown
+              data={sort}
+              labelField="label"
+              valueField="value"
+              placeholder="Sort By"
               value={selectedSort}
-              placeholder={{ label: "Sort by:", value: null }}
-            /> */}
+              onChange={(item) => setSelectedSort(item.value)}
+              style={styles.dropdown}
+              containerStyle={styles.dropdownContainer}
+              itemTextStyle={styles.dropdownText}
+            />
           </View>
         </View>
       </View>
@@ -165,7 +176,9 @@ const Home = () => {
                 />
                 <Text style={{ fontSize: 36 }}>{item.rating.toFixed(1)}</Text>
               </View>
-              <Text style={{ fontSize: 36, color: "gray" }}>LKR {item.price}</Text>
+              <Text style={{ fontSize: 36, color: "gray" }}>
+                LKR {item.price}
+              </Text>
               <TouchableOpacity onPress={() => handleAddItemToCart(item)}>
                 <FontAwesome6
                   name="cart-plus"
@@ -235,9 +248,21 @@ const styles = StyleSheet.create({
   },
   listHeaderContainer: {},
   pickerContainer: {
-    borderColor: "#ccc",
+    width: "50%",
+  },
+  dropdown: {
+    height: 30,
+    borderColor: "gray",
     borderWidth: 1,
     borderRadius: 4,
-    width: "50%",
+    justifyContent: "center",
+    paddingHorizontal: 8,
+  },
+  dropdownText: {
+    fontSize: 16,
+  },
+  dropdownContainer: {
+    width: "80%",
+    marginTop: 16,
   },
 });
